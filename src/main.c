@@ -12,8 +12,8 @@ unsigned long long Unpack(unsigned long long param_1, char *param_2){
   unsigned int uVar6;
   unsigned short int unpackedBlockSize;
   unsigned char *puVar8;
-  unsigned char uVar9;
-  unsigned int uVar10;
+  int16_t uVar9;
+  int16_t uVar10;
   unsigned int uVar11;
   unsigned int uVar12;
   unsigned char uVar13;
@@ -35,8 +35,8 @@ unsigned long long Unpack(unsigned long long param_1, char *param_2){
   char *pbVar29;
   unsigned char *uVar30;
   int16_t iVar31;
-  long long lVar32;
-  long long lVar33;
+  int16_t lVar32;
+  int16_t lVar33;
   unsigned int in_vr0_32_0 = 0xFFFFFFFF;
   unsigned int in_vr0_32_1 = 0xFFFFFFFF;
   unsigned int in_vr0_32_2 = 0xFFFFFFFF;
@@ -51,15 +51,15 @@ unsigned long long Unpack(unsigned long long param_1, char *param_2){
   int auStack_480[128];
   char abStack_280[512];
 
-  unsigned char* au880 = auStack_880;
-  unsigned char* abd80 = abStack_d80;
-  unsigned char* ab680 = abStack_680;
-  unsigned char* abe80 = abStack_e80;
-  unsigned char* f80 = local_f80;
-  unsigned char* c80 = local_c80;
-  unsigned char* au480 = auStack_480;
   unsigned char* ab280 = abStack_280;
+  unsigned char* ab680 = abStack_680;
   unsigned char* aba80 = abStack_a80;
+  unsigned char* abd80 = abStack_d80;
+  unsigned char* abe80 = abStack_e80;
+  unsigned char* au480 = auStack_480;
+  unsigned char* au880 = auStack_880;
+  unsigned char* c80 = local_c80;
+  unsigned char* f80 = local_f80;
 
   if ((((param_2 == (char *)0x0) || (*param_2 != 'R')) || (param_2[1] != 'A')) ||
       ((param_2[2] != '\0' || (param_2[3] != '\x05')))) {
@@ -78,6 +78,7 @@ unsigned long long Unpack(unsigned long long param_1, char *param_2){
     // uVar7 = uVar7 | (unsigned int)param_2[4] << 0x18;
     // uVar7 = 0x8000;
     uVar13 = 0;
+    param_1 = (unsigned char*) calloc(unpackedBlockSize, sizeof(unsigned char));
     uVar30 = param_1;
     if (param_2[0xd] == '\0')
     {
@@ -544,7 +545,7 @@ unsigned long long Unpack(unsigned long long param_1, char *param_2){
                 if (bVar27 == 0xff)
                 {
                   lVar32 = (long long)((int)lVar18 + 2);
-                  *(au880 + uVar12) = (char)((int)lVar18 >> 1);
+                  *(au880 + uVar12) = (lVar18 >> 1);
                   lVar25 = lVar18;
                 }
                 if ((int)lVar25 < 0)
@@ -582,7 +583,6 @@ unsigned long long Unpack(unsigned long long param_1, char *param_2){
                 if ((lVar25 >> 1) == 0xff)
                 {
                   lVar33 = (long long)(iVar31 + 2);
-                  // c = &auStack_880;
                   *(au880 + iVar26) = *(au880 + iVar26) & (unsigned char) (iVar31 >> 1);
                   lVar25 = lVar32;
                 }
@@ -591,7 +591,6 @@ unsigned long long Unpack(unsigned long long param_1, char *param_2){
                 uVar10 = uVar10 - 2;
                 lVar32 = lVar33;
               }
-              // c = &auStack_880;
               lVar25 = (*(au880 + iVar23)) << 1;
               lVar18 = lVar32;
               if (iVar31 + -2 == (int)lVar25)
@@ -599,7 +598,7 @@ unsigned long long Unpack(unsigned long long param_1, char *param_2){
                 lVar18 = lVar25;
               }
               (*(au880 + iVar23)) = 0;
-              (*(ab280 + iVar23)) = (*(abe80 + uVar11));
+              (*(ab680 + iVar23)) = (*(abe80 + uVar11));
             }
             uVar11 = uVar11 + 1;
           } while (bVar4 != uVar11);
@@ -1053,7 +1052,7 @@ unsigned long long Unpack(unsigned long long param_1, char *param_2){
                 if (bVar27 == 0xff)
                 {
                   lVar32 = (long long)((int)lVar18 + 2);
-                  *(au480 + uVar12) = (char)((int)lVar18 >> 1);
+                  *(au480 + uVar12) = (lVar18 >> 1);
                   lVar25 = lVar18;
                 }
                 if ((int)lVar25 < 0)
@@ -1542,7 +1541,6 @@ unsigned long long Unpack(unsigned long long param_1, char *param_2){
         {
           lVar18 = 2;
           uVar11 = 0;
-          // c = &local_c80;
           do
           {
             bVar27 = *(f80 + uVar11);
@@ -1557,7 +1555,7 @@ unsigned long long Unpack(unsigned long long param_1, char *param_2){
               if ((lVar25 >> 1 ) == 0xff)
               {
                 lVar32 = (long long)((int)lVar18 + 2);
-                *(c80 + uVar10) = (char)((int)lVar18 >> 1);
+                *(c80 + uVar10) = (lVar18 >> 1);
                 lVar25 = lVar18;
               }
               uVar9 = (unsigned int)lVar25;
@@ -1577,7 +1575,7 @@ unsigned long long Unpack(unsigned long long param_1, char *param_2){
                   lVar25 = ((int16_t) ((unsigned char)*(c80 + uVar10))) << 1;
                   if ((lVar25 >> 1 ) == 0xff)
                   {
-                    *(c80 + uVar10) = (char)((int)lVar32 >> 1);
+                    *(c80 + uVar10) = (lVar32 >> 1);
                     lVar25 = lVar32;
                     lVar32 = (long long)((int)lVar32 + 2);
                   }
@@ -1600,7 +1598,7 @@ unsigned long long Unpack(unsigned long long param_1, char *param_2){
                   if ((uVar9 >> 1) == 0xff)
                   {
                     lVar33 = (long long)(int)(uVar10 + 2);
-                    *(c80 + iVar24) = (char)((int)uVar10 >> 1);
+                    *(c80 + iVar24) = (uVar10 >> 1);
                     uVar9 = uVar10;
                   }
                   if (((int)uVar9 < 0) || (iVar24 < 0))
@@ -1616,7 +1614,7 @@ unsigned long long Unpack(unsigned long long param_1, char *param_2){
                   if ((lVar25 >> 1) == 0xff)
                   {
                     lVar32 = (long long)((int)lVar33 + 2);
-                    *(c80 + uVar10) = (char)((int)lVar33 >> 1);
+                    *(c80 + uVar10) = (lVar33 >> 1);
                     lVar25 = lVar33;
                   }
                   if (((int)lVar25 < 0) || ((int)uVar10 < 0))
@@ -1639,8 +1637,6 @@ unsigned long long Unpack(unsigned long long param_1, char *param_2){
         }
       LAB_00787d90:
         iVar24 = 0;
-        // c = &auStack_480;
-        // e = &abStack_280;
         do
         {
           uVar21 = 0;
@@ -1803,7 +1799,7 @@ unsigned long long Unpack(unsigned long long param_1, char *param_2){
                 pbVar29 = pbVar29 + 1;
               }
               iVar26 = ((unsigned int)uVar13 & 1) + (int)(uVar22 << 1);
-              uVar22 = *(c80 + iVar26);
+              uVar22 = *(c80 + iVar26 );
             } while (uVar22 != 0);
             bVar4 = *(aba80 + iVar26);
             uVar11 = (unsigned int)bVar4;
