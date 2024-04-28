@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <stdint.h>
 
+char* read_file(char* filepath);
+
 unsigned long long Unpack(unsigned long long param_1, char *param_2){
   bool bVar1;
   char bVar2;
@@ -1098,7 +1100,6 @@ unsigned long long Unpack(unsigned long long param_1, char *param_2){
                 uVar10 = uVar10 - 2;
                 lVar32 = lVar33;
               }
-              // c = &auStack_480;
               lVar25 = (*(au480 + iVar24)) << 1;
               lVar18 = lVar32;
               if (iVar31 + -2 == (int)lVar25)
@@ -1922,12 +1923,12 @@ unsigned long long Unpack(unsigned long long param_1, char *param_2){
               }
             }
           LAB_00788124:
-            uVar11 = ~uVar11;
+            // uVar11 = ~uVar11;
             puVar8 = (unsigned char *)uVar30;
             uVar15 = uVar21 - 1;
             uVar10 = (unsigned int)uVar15 & 7;
             uVar14 = 1;
-            *puVar8 = puVar8[uVar11];
+            *puVar8 = (*(puVar8 - uVar11 - 1));
             uVar22 = uVar14;
             if (uVar21 != 1)
             {
@@ -1946,30 +1947,30 @@ unsigned long long Unpack(unsigned long long param_1, char *param_2){
                           if (uVar10 != 6)
                           {
                             uVar14 = 2;
-                            puVar8[1] = (puVar8 + 1)[uVar11];
+                            (*(puVar8 + 1)) = (*(puVar8 - uVar11));
                           }
                           iVar26 = (int)uVar14;
                           uVar14 = uVar14 + 1;
-                          puVar8[iVar26] = (puVar8 + iVar26)[uVar11];
+                          (*(puVar8 + (int)iVar26)) = (*(puVar8 + (int)iVar26- uVar11 - 1));
                         }
                         iVar26 = (int)uVar14;
                         uVar14 = uVar14 + 1;
-                        puVar8[iVar26] = (puVar8 + iVar26)[uVar11];
+                        (*(puVar8 + (int)iVar26)) = (*(puVar8 + (int)iVar26- uVar11 - 1));
                       }
                       iVar26 = (int)uVar14;
                       uVar14 = uVar14 + 1;
-                      puVar8[iVar26] = (puVar8 + iVar26)[uVar11];
+                      (*(puVar8 + (int)iVar26)) = (*(puVar8 + (int)iVar26- uVar11 - 1));
                     }
                     iVar26 = (int)uVar14;
                     uVar14 = uVar14 + 1;
-                    puVar8[iVar26] = (puVar8 + iVar26)[uVar11];
+                    (*(puVar8 + (int)iVar26)) = (*(puVar8 + (int)iVar26- uVar11 - 1));
                   }
                   iVar26 = (int)uVar14;
                   uVar14 = uVar14 + 1;
-                  puVar8[iVar26] = (puVar8 + iVar26)[uVar11];
+                  (*(puVar8 + (int)iVar26)) = (*(puVar8 + (int)iVar26- uVar11 - 1));
                 }
                 uVar22 = uVar14 + 1;
-                puVar8[(int)uVar14] = (puVar8 + (int)uVar14)[uVar11];
+                (*(puVar8 + (int)uVar14)) = (*(puVar8 + (int)uVar14 - uVar11 - 1));
                 if (uVar21 == uVar22)
                   goto LAB_00788384;
               }
@@ -1978,20 +1979,20 @@ unsigned long long Unpack(unsigned long long param_1, char *param_2){
               {
                 uVar21 = uVar22 + 1 & 0xffffffff;
                 uVar14 = uVar21 + 1 & 0xffffffff;
-                puVar8[(int)uVar22] = (puVar8 + (int)uVar22)[uVar11];
+                (*(puVar8 + (int)uVar22)) = (*(puVar8 + (int)uVar22- uVar11 - 1));
                 uVar22 = uVar14 + 1 & 0xffffffff;
-                puVar8[(int)uVar21] = (puVar8 + (int)uVar21)[uVar11];
+                (*(puVar8 + (int)uVar21)) = (*(puVar8 + (int)uVar21- uVar11 - 1));
                 uVar21 = uVar22 + 1 & 0xffffffff;
-                puVar8[(int)uVar14] = (puVar8 + (int)uVar14)[uVar11];
+                (*(puVar8 + (int)uVar14)) = (*(puVar8 + (int)uVar14- uVar11 - 1));
                 uVar14 = uVar21 + 1 & 0xffffffff;
-                puVar8[(int)uVar22] = (puVar8 + (int)uVar22)[uVar11];
+                (*(puVar8 + (int)uVar22)) = (*(puVar8 + (int)uVar22- uVar11 - 1));
                 uVar22 = uVar14 + 1 & 0xffffffff;
-                puVar8[(int)uVar21] = (puVar8 + (int)uVar21)[uVar11];
+                (*(puVar8 + (int)uVar21)) = (*(puVar8 + (int)uVar21- uVar11 - 1));
                 uVar21 = uVar22 + 1 & 0xffffffff;
-                puVar8[(int)uVar14] = (puVar8 + (int)uVar14)[uVar11];
-                puVar8[(int)uVar22] = (puVar8 + (int)uVar22)[uVar11];
+                (*(puVar8 + (int)uVar14)) = (*(puVar8 + (int)uVar14- uVar11 - 1));
+                (*(puVar8 + (int)uVar22)) = (*(puVar8 + (int)uVar22- uVar11 - 1));
                 uVar22 = uVar21 + 1 & 0xffffffff;
-                puVar8[(int)uVar21] = (puVar8 + (int)uVar21)[uVar11];
+                (*(puVar8 + (int)uVar21)) = (*(puVar8 + (int)uVar21- uVar11 - 1));
                 lVar18 = lVar18 + -1;
               } while (lVar18 != 0);
             }
@@ -2010,7 +2011,7 @@ unsigned long long Unpack(unsigned long long param_1, char *param_2){
       uVar13 = 1;
     }
   }
-  return uVar13;
+  return param_1;
 }
 
 char* read_file(char *filepath){
@@ -2035,10 +2036,28 @@ char* read_file(char *filepath){
   return buffer;
 }
 
+void save_chunk(char* addr){
+  FILE *out = fopen("D:\\github\\MSMV-unpack\\blob0.bin", "wb");
+  if(out != NULL)
+  {
+    size_t to_go = 1;
+    while(to_go > 0)
+    {
+      const size_t wrote = fwrite(addr, to_go, 0x8000, out);
+      if(wrote == 0)
+        break;
+      to_go -= wrote;
+    }
+    fclose(out);
+  }
+  free(addr);
+}
+
 int main(){
 
     char* arch = read_file("D:\\github\\MSMV-unpack\\block0.bin");
     char* mem;
-    Unpack((unsigned long long) mem, arch);
+    mem = Unpack((unsigned long long) mem, arch);
+    save_chunk(mem);
 
 }
