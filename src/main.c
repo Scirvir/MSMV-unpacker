@@ -3,42 +3,58 @@
 #include <stdlib.h>
 #include <stdint.h>
 
+unsigned int CHUNK_OFFSET = 0x0;
+unsigned int BLOB_SIZE = 0x0000;
+
+unsigned long get_file_size(char* filepath){
+  unsigned long length = 0;
+  FILE * f = fopen (filepath, "rb");
+
+  if (f)
+  {
+    fseek (f, 0, SEEK_END);
+    length = ftell (f);
+  }
+
+  return length;
+}
+
 char* read_file(char* filepath);
 
-unsigned long long Unpack(unsigned long long param_1, char *param_2){
+char* Unpack(char* param_1, char* param_2){
   bool bVar1;
   char bVar2;
-  char bVar3;
-  char bVar4;
+  unsigned char bVar3;
+  unsigned char bVar4;
   char bVar5;
   unsigned int uVar6;
-  unsigned short int unpackedBlockSize;
+  unsigned short int unpackedBlobSize;
   unsigned char *puVar8;
-  int16_t uVar9;
+  unsigned short int uVar9;
   int16_t uVar10;
   unsigned int uVar11;
-  unsigned int uVar12;
+  unsigned short int uVar12;
   unsigned char uVar13;
   unsigned long long uVar14;
-  unsigned long long uVar15;
-  int iVar16;
+  unsigned short int uVar15;
+  unsigned short int iVar16;
   char *pbVar17;
   char *pbVar20;
-  long long lVar18;
+  unsigned long lVar18;
   unsigned long long uVar19;
-  unsigned char uVar21;
-  unsigned long long uVar22;
-  int16_t iVar23;
-  int iVar24;
-  char bVar27;
+  unsigned short int uVar21;
+  unsigned short uVar22;
+  unsigned short int iVar23;
+  short int iVar24;
+  unsigned char bVar27;
   char cVar28;
-  int16_t lVar25;
-  int16_t  iVar26;
+  unsigned short int lVar25;
+  unsigned short int  iVar26;
   char *pbVar29;
   unsigned char *uVar30;
-  int16_t iVar31;
-  int16_t lVar32;
-  int16_t lVar33;
+  unsigned short int iVar31;
+  unsigned short int lVar32;
+  unsigned short int lVar33;
   unsigned int in_vr0_32_0 = 0xFFFFFFFF;
   unsigned int in_vr0_32_1 = 0xFFFFFFFF;
   unsigned int in_vr0_32_2 = 0xFFFFFFFF;
@@ -71,16 +87,11 @@ unsigned long long Unpack(unsigned long long param_1, char *param_2){
   {
     iVar23 = 1;
     pbVar20 = (char *)(param_2 + 0x10);
-    // uVar7 = (char)param_2[7] |
-    //         (char)param_2[6] << 8 |
-    //         (char)param_2[5] << 0x10 | (char)param_2[4] << 0x18;
-    unpackedBlockSize = (char)param_2[7];
-    unpackedBlockSize = unpackedBlockSize | (char)param_2[6] << 8;
-    // uVar7 = uVar7 | (unsigned int)param_2[5] << 0x10;
-    // uVar7 = uVar7 | (unsigned int)param_2[4] << 0x18;
-    // uVar7 = 0x8000;
+    unpackedBlobSize = (char)param_2[7];
+    unpackedBlobSize = unpackedBlobSize | (char)param_2[6] << 8;
+    BLOB_SIZE = unpackedBlobSize;
     uVar13 = 0;
-    param_1 = (unsigned char*) calloc(unpackedBlockSize, sizeof(unsigned char));
+    param_1 = (unsigned char*) calloc(unpackedBlobSize, sizeof(unsigned char));
     uVar30 = param_1;
     if (param_2[0xd] == '\0')
     {
@@ -478,7 +489,7 @@ unsigned long long Unpack(unsigned long long param_1, char *param_2){
                 } while (lVar18 != 0);
               }
             }
-          LAB_00786960:
+            LAB_00786960:
             uVar10 = uVar11 + 1;
             *(abd80 + uVar11) = (char)uVar14;
             uVar22 = uVar14 + 1 & 0xffffffff;
@@ -543,7 +554,7 @@ unsigned long long Unpack(unsigned long long param_1, char *param_2){
                 uVar10 = bVar27 - 1;
                 uVar12 = (unsigned int)((bVar5 >> (uVar10 & 0x3f) & 1) != 0);
                 bVar27 = *(au880 + uVar12);
-                lVar25 = (unsigned long long)bVar27 << 1;
+                lVar25 = (unsigned char)bVar27 << 1;
                 if (bVar27 == 0xff)
                 {
                   lVar32 = (long long)((int)lVar18 + 2);
@@ -605,7 +616,7 @@ unsigned long long Unpack(unsigned long long param_1, char *param_2){
             uVar11 = uVar11 + 1;
           } while (bVar4 != uVar11);
         }
-      LAB_00786bec:
+        LAB_00786bec:
         bVar4 = *pbVar20;
         uVar21 = uVar21 >> 1;
         pbVar29 = pbVar20 + 1;
@@ -791,7 +802,7 @@ unsigned long long Unpack(unsigned long long param_1, char *param_2){
                 lVar18 = lVar18 + -1;
               } while (lVar18 != 0);
             }
-          LAB_00786f78:
+            LAB_00786f78:
             iVar23 = iVar23 + -1;
             uVar21 = uVar21 >> 1;
             *(abe80 + uVar12) = bVar27;
@@ -915,7 +926,7 @@ unsigned long long Unpack(unsigned long long param_1, char *param_2){
                 lVar18 = lVar18 + -1;
               } while (lVar18 != 0);
             }
-          LAB_007871c0:
+            LAB_007871c0:
             uVar9 = uVar12 + 1;
             *(f80 + uVar12) = cVar28 + 1;
             uVar12 = uVar9;
@@ -985,7 +996,7 @@ unsigned long long Unpack(unsigned long long param_1, char *param_2){
                 } while (lVar18 != 0);
               }
             }
-          LAB_007872e8:
+            LAB_007872e8:
             uVar10 = uVar11 + 1;
             *(abd80 + uVar11) = (char)uVar14;
             uVar22 = uVar14 + 1 & 0xffffffff;
@@ -1078,7 +1089,7 @@ unsigned long long Unpack(unsigned long long param_1, char *param_2){
                   iVar26 = iVar31;
                 }
                 if ((iVar26 < 0) || (iVar24 < 0))
-                  goto LAB_00787574;
+                  goto LAB_007031d0;
                 lVar18 = lVar18 + -1;
                 iVar31 = (int)lVar32;
                 if (lVar18 == 0)
@@ -1096,7 +1107,7 @@ unsigned long long Unpack(unsigned long long param_1, char *param_2){
                   lVar25 = lVar32;
                 }
                 if (((int)lVar25 < 0) || (iVar26 < 0))
-                  goto LAB_00787574;
+                  goto LAB_007031d0;
                 uVar10 = uVar10 - 2;
                 lVar32 = lVar33;
               }
@@ -1112,7 +1123,7 @@ unsigned long long Unpack(unsigned long long param_1, char *param_2){
             uVar11 = uVar11 + 1;
           } while (bVar4 != uVar11);
         }
-      LAB_00787574:
+        LAB_007031d0:
         bVar4 = *pbVar29;
         uVar21 = uVar21 >> 1;
         pbVar20 = pbVar29 + 1;
@@ -1298,7 +1309,7 @@ unsigned long long Unpack(unsigned long long param_1, char *param_2){
                 lVar18 = lVar18 + -1;
               } while (lVar18 != 0);
             }
-          LAB_00787900:
+            LAB_00787900:
             iVar23 = iVar23 + -1;
             uVar13 = uVar13 >> 1;
             *(abe80 + uVar12) = bVar27;
@@ -1422,7 +1433,7 @@ unsigned long long Unpack(unsigned long long param_1, char *param_2){
                 lVar18 = lVar18 + -1;
               } while (lVar18 != 0);
             }
-          LAB_00787b48:
+            LAB_00787b48:
             uVar9 = uVar12 + 1;
             *(f80 + uVar12) = cVar28 + 1;
             uVar12 = uVar9;
@@ -1492,7 +1503,7 @@ unsigned long long Unpack(unsigned long long param_1, char *param_2){
                 } while (lVar18 != 0);
               }
             }
-          LAB_00787c70:
+            LAB_00787c70:
             uVar10 = uVar11 + 1;
             *(abd80 + uVar11) = (char)uVar14;
             uVar22 = uVar14 + 1 & 0xffffffff;
@@ -1623,7 +1634,7 @@ unsigned long long Unpack(unsigned long long param_1, char *param_2){
                   lVar18 = lVar18 + -1;
                 } while (lVar18 != 0);
               }
-            LAB_0078879c:
+              LAB_0078879c:
               lVar25 = ((int16_t) ((unsigned char)*(c80 + uVar10))) << 1;
               lVar18 = lVar32;
               if ((int)lVar32 + -2 == (int)lVar25)
@@ -1636,7 +1647,7 @@ unsigned long long Unpack(unsigned long long param_1, char *param_2){
             uVar11 = uVar11 + 1;
           } while (bVar4 != uVar11);
         }
-      LAB_00787d90:
+        LAB_00787d90:
         iVar24 = 0;
         do
         {
@@ -1715,6 +1726,9 @@ unsigned long long Unpack(unsigned long long param_1, char *param_2){
                 pbVar29 = pbVar29 + 1;
                 *(char *)uVar30 = bVar4;
                 uVar30 = uVar30 + 1;
+                if(uVar21 > 65000){
+                  printf("test");
+                }
                 if (pbVar17 == (char *)uVar30)
                   goto LAB_00787dfc;
               }
@@ -1743,7 +1757,7 @@ unsigned long long Unpack(unsigned long long param_1, char *param_2){
               } while (lVar18 != 0);
             }
           }
-        LAB_00787dfc:
+          LAB_00787dfc:
           uVar21 = 0;
           do
           {
@@ -1762,7 +1776,7 @@ unsigned long long Unpack(unsigned long long param_1, char *param_2){
             uVar21 = *(au880 + iVar26);
           } while (uVar21 != 0);
           uVar21 = *(ab680 + iVar26);
-          if (uVar21 == 0xff)
+          if ((unsigned char) uVar21 == 0xff)
           {
             uVar21 = uVar13 >> 1;
             iVar23 = iVar31 + -1;
@@ -1922,7 +1936,7 @@ unsigned long long Unpack(unsigned long long param_1, char *param_2){
                 } while (lVar18 != 0);
               }
             }
-          LAB_00788124:
+            LAB_00788124:
             // uVar11 = ~uVar11;
             puVar8 = (unsigned char *)uVar30;
             uVar15 = uVar21 - 1;
@@ -1996,14 +2010,17 @@ unsigned long long Unpack(unsigned long long param_1, char *param_2){
                 lVar18 = lVar18 + -1;
               } while (lVar18 != 0);
             }
-          LAB_00788384:
+            LAB_00788384:
             uVar30 = uVar30 + uVar22;
             pbVar20 = pbVar29;
           }
           iVar24 = iVar24 + 1;
-        } while ((unsigned int)bVar3 + (unsigned int)bVar2 * 0x100 != iVar24);
+          // if((((puVar8 + (int)uVar21)) - (unsigned char*) param_1) > 0x860){
+          //   printf("breakpoint: bVar3 %x bVar2 %x iVar24 %x", bVar3,bVar2,iVar24);
+          // }
+        } while (((unsigned int)bVar3 + (unsigned int)bVar2 * 0x100) != iVar24);
       }
-      uVar13 = ((unsigned long long)(char)(((int)uVar30 - (int)param_1 == (int)unpackedBlockSize) << 1) << 0x20) >> 0x21;
+      uVar13 = ((unsigned long long)(char)(((int)uVar30 - (int)param_1 == (int)unpackedBlobSize) << 1) << 0x20) >> 0x21;
     }
     else
     {
@@ -2036,14 +2053,42 @@ char* read_file(char *filepath){
   return buffer;
 }
 
+char* read_chunk_from_file(char *filepath){
+    
+  char * buffer = 0;
+  short int length;
+  FILE * f = fopen (filepath, "rb");
+
+  if (f)
+  {
+    fseek(f, CHUNK_OFFSET + 0xA, SEEK_SET);
+    
+    length =  fgetc(f) << 8;
+    length =  length | fgetc(f);
+    length += 0x10;
+
+    fseek (f, CHUNK_OFFSET, SEEK_SET);
+    CHUNK_OFFSET += length;
+    buffer = malloc (length);
+
+    if (buffer)
+    {
+      fread (buffer, 1, length, f);
+    }
+    fclose (f);
+  }
+
+  return buffer;
+}
+
 void save_chunk(char* addr){
-  FILE *out = fopen("D:\\github\\MSMV-unpack\\blob0.bin", "wb");
+  FILE *out = fopen("D:\\github\\MSMV-unpack\\uncompressed_blob_bces.bin", "ab");
   if(out != NULL)
   {
     size_t to_go = 1;
     while(to_go > 0)
     {
-      const size_t wrote = fwrite(addr, to_go, 0x8000, out);
+      const size_t wrote = fwrite(addr, to_go, BLOB_SIZE, out);
       if(wrote == 0)
         break;
       to_go -= wrote;
@@ -2055,9 +2100,24 @@ void save_chunk(char* addr){
 
 int main(){
 
-    char* arch = read_file("D:\\github\\MSMV-unpack\\block0.bin");
+    char* arch;
     char* mem;
-    mem = Unpack((unsigned long long) mem, arch);
-    save_chunk(mem);
+    unsigned long file_size = 0;
+    
+    if (remove("D:\\github\\MSMV-unpack\\uncompressed_blob_bces.bin") == 0) {
+        printf("File deleted successfully.\n");
+    } else {
+        printf("Error deleting the file.\n");
+    }
 
+    file_size = get_file_size("D:\\github\\MSMV-unpack\\cache_ps3_bcus_1.00.dat");
+    printf("file_size %x\n", file_size);
+
+    while(file_size > CHUNK_OFFSET){
+      printf("Unpacking chunk at: 0x%x\n", CHUNK_OFFSET);
+      arch = read_chunk_from_file("D:\\github\\MSMV-unpack\\cache_ps3_bcus_1.00.dat");
+      mem = Unpack(mem, arch);
+      save_chunk(mem);
+      free(arch);
+    }
 }
