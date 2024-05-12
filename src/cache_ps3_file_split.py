@@ -1,13 +1,12 @@
 import os
 import csv
 import argparse
-import time
 
 repeats_count = {}
 
-
 def split_binary_file(input_file_path, offset, file_size, output_file_path, repeats_folder, output_root_folder):
 
+    global repeats_count
     filepath_for_os = os.path.join(output_root_folder, output_file_path)
 
     with open(input_file_path, 'rb') as input_file:
@@ -25,7 +24,7 @@ def split_binary_file(input_file_path, offset, file_size, output_file_path, repe
         filepath_for_os_repeats = os.path.join(repeats_folder, output_file_path)       
         os.makedirs(os.path.dirname(filepath_for_os_repeats), exist_ok=True)
 
-        count = repeats_count.get(filepath_for_os_repeats, 0)
+        count = repeats_count.get(output_file_path, 0)
 
         with open(f'{filepath_for_os_repeats}_{count}', 'wb') as output_file:
             output_file.write(file_data)
