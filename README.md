@@ -13,7 +13,7 @@ Unpacks asset archive from MotorStorm, cache_ps3.dat.
 ## Usage 
 ### Requirements
 - Python 3.4+.
-- Binaries found in releases for your platform.
+- Binaries found in [releases](https://github.com/Scirvir/MSMV-unpacker/releases) for your platform.
 - cache_ps3.dat and cache_ps3.txt from the game.
 
 Run the unpacker:
