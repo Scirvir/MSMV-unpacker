@@ -18,7 +18,7 @@ Unpacks asset archive from MotorStorm, cache_ps3.dat.
 
 Run the unpacker:
 ```
-MSMV-unpacker-win64.exe -c "/path/to/cache_ps3.dat -u "/path/to/uncompressed_blob_save_location"
+MSMV-unpacker-win64.exe -c "/path/to/cache_ps3.dat" -u "/path/to/uncompressed_blob_save_location"
 ```
 
 Run splitter script:
