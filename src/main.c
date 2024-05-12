@@ -19,8 +19,6 @@ unsigned long get_file_size(char* filepath){
   return length;
 }
 
-char* read_file(char* filepath);
-
 char* Unpack(char* param_1, char* param_2){
   bool bVar1;
   char bVar2;
@@ -35,13 +33,13 @@ char* Unpack(char* param_1, char* param_2){
   unsigned int uVar11;
   unsigned short int uVar12;
   unsigned char uVar13;
-  unsigned long long uVar14;
+  unsigned short int uVar14;
   unsigned short int uVar15;
   unsigned short int iVar16;
   char *pbVar17;
   char *pbVar20;
-  unsigned long lVar18;
-  unsigned long long uVar19;
+  unsigned short int lVar18;
+  unsigned short int uVar19;
   unsigned short int uVar21;
   unsigned short uVar22;
   unsigned short int iVar23;
@@ -1089,7 +1087,7 @@ char* Unpack(char* param_1, char* param_2){
                   iVar26 = iVar31;
                 }
                 if ((iVar26 < 0) || (iVar24 < 0))
-                  goto LAB_007031d0;
+                  goto LAB_00787574;
                 lVar18 = lVar18 + -1;
                 iVar31 = (int)lVar32;
                 if (lVar18 == 0)
@@ -1107,7 +1105,7 @@ char* Unpack(char* param_1, char* param_2){
                   lVar25 = lVar32;
                 }
                 if (((int)lVar25 < 0) || (iVar26 < 0))
-                  goto LAB_007031d0;
+                  goto LAB_00787574;
                 uVar10 = uVar10 - 2;
                 lVar32 = lVar33;
               }
@@ -1123,7 +1121,7 @@ char* Unpack(char* param_1, char* param_2){
             uVar11 = uVar11 + 1;
           } while (bVar4 != uVar11);
         }
-        LAB_007031d0:
+        LAB_00787574:
         bVar4 = *pbVar29;
         uVar21 = uVar21 >> 1;
         pbVar20 = pbVar29 + 1;
@@ -1726,9 +1724,6 @@ char* Unpack(char* param_1, char* param_2){
                 pbVar29 = pbVar29 + 1;
                 *(char *)uVar30 = bVar4;
                 uVar30 = uVar30 + 1;
-                if(uVar21 > 65000){
-                  printf("test");
-                }
                 if (pbVar17 == (char *)uVar30)
                   goto LAB_00787dfc;
               }
@@ -2015,9 +2010,6 @@ char* Unpack(char* param_1, char* param_2){
             pbVar20 = pbVar29;
           }
           iVar24 = iVar24 + 1;
-          // if((((puVar8 + (int)uVar21)) - (unsigned char*) param_1) > 0x860){
-          //   printf("breakpoint: bVar3 %x bVar2 %x iVar24 %x", bVar3,bVar2,iVar24);
-          // }
         } while (((unsigned int)bVar3 + (unsigned int)bVar2 * 0x100) != iVar24);
       }
       uVar13 = ((unsigned long long)(char)(((int)uVar30 - (int)param_1 == (int)unpackedBlobSize) << 1) << 0x20) >> 0x21;
@@ -2056,7 +2048,7 @@ char* read_file(char *filepath){
 char* read_chunk_from_file(char *filepath){
     
   char * buffer = 0;
-  short int length;
+  unsigned short int length;
   FILE * f = fopen (filepath, "rb");
 
   if (f)
@@ -2081,11 +2073,11 @@ char* read_chunk_from_file(char *filepath){
   return buffer;
 }
 
-void save_chunk(char* addr){
-  FILE *out = fopen("D:\\github\\MSMV-unpack\\uncompressed_blob_bces.bin", "ab");
+void save_chunk(char* addr, char* out_path){
+  FILE *out = fopen(out_path, "ab");
   if(out != NULL)
   {
-    size_t to_go = 1;
+    int to_go = 1;
     while(to_go > 0)
     {
       const size_t wrote = fwrite(addr, to_go, BLOB_SIZE, out);
@@ -2098,26 +2090,56 @@ void save_chunk(char* addr){
   free(addr);
 }
 
-int main(){
+int main(int argc, char** argv){
 
-    char* arch;
-    char* mem;
-    unsigned long file_size = 0;
-    
-    if (remove("D:\\github\\MSMV-unpack\\uncompressed_blob_bces.bin") == 0) {
-        printf("File deleted successfully.\n");
-    } else {
-        printf("Error deleting the file.\n");
+  char* arch;
+  char* mem;
+  unsigned long file_size = 0;
+
+  // set defaults
+  char* cache_path = "cache_ps3.dat";
+  char* uncompressed_blob_path = "cache_ps3_uncompressed_blob.bin";
+  bool called_help = false;
+  bool defaults_modified = false;
+
+  int i;
+  for (i = 1; i < argc; i++) {
+    if (argv[i][0] == '-') {
+      switch (argv[i][1]) {
+        case 'c':
+          cache_path = argv[i + 1];
+          printf("Compressed archive location set to: %s\n", cache_path);
+          defaults_modified = true;
+          break;
+        case 'h':
+          printf("MotorStorm cache_ps3.dat unpacker by Scirvir.\nSupported:\n- NTSC-U [BCUS-98137] 1.00\n- PAL [BCES-00006] 1.00\n\nParameters:\n    -c: Set cache_ps3.dat location. Default: ./cache_ps3.dat\n    -h: Show this help message.\n    -u: Set uncompressed blob save location. Default: ./cache_ps3_uncompressed_blob.bin\n\nSee known issues or report them at https://github.com/Scirvir/MSMV-unpacker");
+          called_help = true;
+          break;
+        case 'u':
+          uncompressed_blob_path = argv[i + 1];
+          printf("Uncompressed blob save location set to: %s\n", uncompressed_blob_path);
+          defaults_modified = true;
+          break;
+      }
+    }
+  }
+  if (!called_help){
+    if (defaults_modified){
+      printf("\n");
     }
 
-    file_size = get_file_size("D:\\github\\MSMV-unpack\\cache_ps3_bcus_1.00.dat");
-    printf("file_size %x\n", file_size);
+    if(remove(uncompressed_blob_path) == 0) {
+      printf("File with matching name was found at \"%s\" and deleted.\n\n", uncompressed_blob_path);
+    }
+
+    file_size = get_file_size(cache_path);
 
     while(file_size > CHUNK_OFFSET){
       printf("Unpacking chunk at: 0x%x\n", CHUNK_OFFSET);
-      arch = read_chunk_from_file("D:\\github\\MSMV-unpack\\cache_ps3_bcus_1.00.dat");
+      arch = read_chunk_from_file(cache_path);
       mem = Unpack(mem, arch);
-      save_chunk(mem);
+      save_chunk(mem, uncompressed_blob_path);
       free(arch);
     }
+  }
 }
