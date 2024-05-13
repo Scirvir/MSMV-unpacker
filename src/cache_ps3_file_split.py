@@ -19,7 +19,7 @@ def split_binary_file(input_file_path, offset, file_size, output_file_path, repe
         with open(filepath_for_os, 'wb') as output_file:
             output_file.write(file_data)
     else:
-        print(f"{filepath_for_os} already exists. Writting to '{repeats_folder}'")
+        print(f"{filepath_for_os} already exists. Writing to '{repeats_folder}'")
 
         filepath_for_os_repeats = os.path.join(repeats_folder, output_file_path)       
         os.makedirs(os.path.dirname(filepath_for_os_repeats), exist_ok=True)
