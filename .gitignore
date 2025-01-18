@@ -1,1 +1,4 @@
 **/.vscode/
+**/cache_ps3_file_split_output/
+*cache_ps3.*
+*.exe
