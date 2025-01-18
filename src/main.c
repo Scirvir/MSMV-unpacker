@@ -72,9 +72,9 @@ char* Unpack(char* param_1, char* param_2){
   unsigned char* aba80 = abStack_a80;
   unsigned char* abd80 = abStack_d80;
   unsigned char* abe80 = abStack_e80;
-  unsigned char* au480 = auStack_480;
-  unsigned char* au880 = auStack_880;
-  unsigned char* c80 = local_c80;
+  unsigned char* au480 = (unsigned char*) auStack_480;
+  unsigned char* au880 = (unsigned char*) auStack_880;
+  unsigned char* c80 = (unsigned char*) local_c80;
   unsigned char* f80 = local_f80;
 
   if ((((param_2 == (char *)0x0) || (*param_2 != 'R')) || (param_2[1] != 'A')) ||
