@@ -236,7 +236,7 @@ def split_cache_blob(config):
 def unpack_subprocess(cache_path, uncompressed_blob_path):
     global verbose_lvl_conf
     unpacker_windows = ["./MSMV-unpacker-win64.exe", "-c", cache_path, "-u", uncompressed_blob_path]
-    unpacker_linux = ["./MSMV-unpacker-linux", "-c", cache_path, "-u", uncompressed_blob_path]
+    unpacker_linux = ["./MSMV-unpacker-linux64", "-c", cache_path, "-u", uncompressed_blob_path]
     cmd = []
     current_platform = system()
     if current_platform == 'Windows':
