@@ -26,7 +26,7 @@ char* Unpack(char* param_1, char* param_2){
   unsigned char bVar4;
   char bVar5;
   unsigned int uVar6;
-  unsigned short int unpackedBlobSize;
+  unsigned short int unpacked_blob_size;
   unsigned char *puVar8;
   unsigned short int uVar9;
   int16_t uVar10;
@@ -85,11 +85,11 @@ char* Unpack(char* param_1, char* param_2){
   {
     iVar23 = 1;
     pbVar20 = (char *)(param_2 + 0x10);
-    unpackedBlobSize = (char)param_2[7];
-    unpackedBlobSize = unpackedBlobSize | (char)param_2[6] << 8;
-    BLOB_SIZE = unpackedBlobSize;
+    unpacked_blob_size = (unsigned char)param_2[7];
+    unpacked_blob_size = unpacked_blob_size | (unsigned char)param_2[6] << 8;
+    BLOB_SIZE = unpacked_blob_size;
     uVar13 = 0;
-    param_1 = (unsigned char*) calloc(unpackedBlobSize, sizeof(unsigned char));
+    param_1 = (unsigned char*) calloc(unpacked_blob_size, sizeof(unsigned char));
     uVar30 = param_1;
     if (param_2[0xd] == '\0')
     {
@@ -2012,11 +2012,12 @@ char* Unpack(char* param_1, char* param_2){
           iVar24 = iVar24 + 1;
         } while (((unsigned int)bVar3 + (unsigned int)bVar2 * 0x100) != iVar24);
       }
-      uVar13 = ((unsigned long long)(char)(((int)uVar30 - (int)param_1 == (int)unpackedBlobSize) << 1) << 0x20) >> 0x21;
+      uVar13 = ((unsigned long long)(char)(((int)uVar30 - (int)param_1 == (int)unpacked_blob_size) << 1) << 0x20) >> 0x21;
     }
     else
     {
       // FUN_00012a50(param_1, pbVar20, uVar7);
+      memcpy(param_1, param_2 + 0x10, unpacked_blob_size);
       uVar13 = 1;
     }
   }
