@@ -1,11 +1,10 @@
 import os
-import csv
+from csv import reader as csv_reader
 import argparse
-import math
-import argparse
-import shutil
+from math import floor, ceil, log, pow
+from shutil import copyfileobj
 import subprocess
-import platform
+from platform import system
 
 
 repeats_count = {}
@@ -25,8 +24,8 @@ def convert_size(size_bytes):
    if size_bytes == 0:
        return "0B"
    size_name = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
-   i = int(math.floor(math.log(size_bytes, 1024)))
-   p = math.pow(1024, i)
+   i = int(floor(log(size_bytes, 1024)))
+   p = pow(1024, i)
    s = round(size_bytes / p, 2)
    return "%s %s" % (s, size_name[i])
 
@@ -57,7 +56,7 @@ def directory_to_unchunked_blob_with_filelist(src_folder_path: str = "", dst_blo
 
     toc = []
     with open(toc_file, 'r') as file:
-        reader = csv.reader(file, delimiter='\t')
+        reader = csv_reader(file, delimiter='\t')
         next(reader, None)
         for row in reader:
             offset = int(row[0])
@@ -75,7 +74,7 @@ def directory_to_unchunked_blob_with_filelist(src_folder_path: str = "", dst_blo
             hash = entry.hash
 
             with open(file_path, 'rb') as infile:
-                shutil.copyfileobj(infile, datfile)
+                copyfileobj(infile, datfile)
     
     next_file_starting_offset = 0
     for entry in toc:
@@ -114,7 +113,9 @@ def chunk_blob(blob_path: str = "", out_cnk_path: str = "", chunked_cache_path: 
     try:
         source = open(blob_path, 'rb')
         chunk_file = open(out_cnk_path, 'wb')
-        chunk_file.write(bytearray.fromhex(f"00016669"))
+
+        num_of_chunks = ceil(source_file_size / 0x8000)
+        chunk_file.write(bytearray.fromhex(str(hex(num_of_chunks))[2:].zfill(8)))
         dest = open(chunked_cache_path, 'wb')
         
         while (source_offset + chunk_size) < source_file_size:
@@ -206,7 +207,7 @@ def split_cache_blob(config):
     input_file_size = os.stat(input_file_path).st_size
 
     with open(toc_file, 'r') as file:
-        reader = csv.reader(file, delimiter='\t')
+        reader = csv_reader(file, delimiter='\t')
         next(reader, None)
         for row in reader:
             offset = int(row[0])
@@ -237,7 +238,7 @@ def unpack_subprocess(cache_path, uncompressed_blob_path):
     unpacker_windows = ["./MSMV-unpacker-win64.exe", "-c", cache_path, "-u", uncompressed_blob_path]
     unpacker_linux = ["./MSMV-unpacker-linux", "-c", cache_path, "-u", uncompressed_blob_path]
     cmd = []
-    current_platform = platform.system()
+    current_platform = system()
     if current_platform == 'Windows':
         cmd = unpacker_windows
     else:
