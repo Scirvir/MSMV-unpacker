@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <string.h>
 
 unsigned int CHUNK_OFFSET = 0x0;
 unsigned int BLOB_SIZE = 0x0000;
